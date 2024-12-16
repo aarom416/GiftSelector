@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>서울미소샘치과 - 경품 추첨 프로그램</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f5faff;
+      color: #333;
+    }
+
+    header {
+      background-color: #007BFF;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    header p {
+      margin: 5px 0 0;
+      font-size: 16px;
+      font-style: italic;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 30px auto;
+      padding: 20px;
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+
+    h2 {
+      font-size: 22px;
+      margin-bottom: 20px;
+      color: #007BFF;
+    }
+
+    textarea {
+      width: 100%;
+      height: 150px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      background-color: #007BFF;
+      color: white;
+      padding: 10px 0;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .results {
+      margin-top: 20px;
+    }
+
+    .results h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: #007BFF;
+    }
+
+    .winner-list {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .winner-list li {
+      background-color: #f9f9f9;
+      margin: 5px 0;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+      text-align: left;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      padding: 20px;
+      background-color: #f0f8ff;
+      color: #333;
+      font-size: 14px;
+    }
+
+    footer a {
+      color: #007BFF;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>서울미소샘치과</h1>
+    <p>8주년 개원 기념 인스타 8로우 Event</p>
+  </header>
+  <div class="container">
+    <h3>참여자 이름을 한 줄씩 입력하세요 :)</h3>
+    <textarea id="participants" placeholder="예: 홍길동, 김철수, 박영희"></textarea>
+    <button onclick="(() => selectWinners(1, '1등', '10만원 백화점 상품권'))()">1등 추첨하기</button>
+    <button onclick="(() => selectWinners(2, '2등', '투썸케이크'))()">2등 추첨하기</button>
+    <button onclick="(() => selectWinners(30, '3등', '아쿠아픽 민트치실 1박스'))()">3등 추첨하기</button>
+    <div class="results" id="results"></div>
+  </div>
+  <footer>
+    <p>서울미소샘치과 | <a href="https://seoulsmileclinic.com" target="_blank">홈페이지 방문</a></p>
+  </footer>
+
+  <script>
+    let participantsList = [];
+
+    document.getElementById('participants').addEventListener('input', (e) => {
+      participantsList = e.target.value.split('\n').map(name => name.trim()).filter(name => name);
+    });
+
+    function selectWinners(count, prizeLevel, prizeDescription) {
+      if (participantsList.length < count) {
+        alert(`참여자가 충분하지 않습니다. 남은 인원: ${participantsList.length}`);
+        return;
+      }
+
+      const winners = [];
+      for (let i = 0; i < count; i++) {
+        const randomIndex = Math.floor(Math.random() * participantsList.length);
+        winners.push(participantsList[randomIndex]);
+        participantsList.splice(randomIndex, 1);
+      }
+
+      const resultsDiv = document.getElementById('results');
+      resultsDiv.innerHTML += `
+        <h3>${prizeLevel} 당첨자 (${prizeDescription})</h3>
+        <ul class="winner-list">
+          ${winners.map(winner => `<li>${winner}</li>`).join('')}
+        </ul>
+        <p>🎉 축하합니다! ${prizeLevel}에 당첨되셨습니다! 🎉</p>
+      `;
+    }
+  </script>
+</body>
+</html>
